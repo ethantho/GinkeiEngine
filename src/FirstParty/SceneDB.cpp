@@ -163,10 +163,13 @@ void SceneDB::LoadTiledMap(std::string tile_scene_path)
 					rb = new_actor->GetComponent("Transform");
 					rb["position"] = glm::vec2(x, y);
 				}
+				else {
+					luabridge::LuaRef SetPosition = rb["SetPosition"];
 
-				luabridge::LuaRef SetPosition = rb["SetPosition"];
+					SetPosition(rb, b2Vec2(x, y));
+				}
 
-				SetPosition(rb, b2Vec2(x,y));
+				
 
 				current_scene.actors.push_back(new_actor);
 				current_scene.new_actors_this_frame.push_back(current_scene.actors.back());
@@ -180,15 +183,13 @@ void SceneDB::LoadTiledMap(std::string tile_scene_path)
 
 		//tile layer
 		int width = layer_data["width"].GetInt();
-		const float tile_width_units = 0.32f; //TODO: not hard code this
+		//const float tile_width_units = 0.32f; //TODO: not hard code this
 
 		for (int j = 0; j < layer_data["data"].Size(); ++j) { //for each tile in the layer
-			//rapidjson::Value dummy_json;
-			//dummy_json.SetArray();
 			Actor* new_tile = new Actor(tile_template->second);
 
-			const float tile_x = static_cast<float>(j % width) * tile_width_units;
-			const float tile_y = static_cast<float>(j / width) * tile_width_units;
+			const float tile_x = static_cast<float>(j % width) * tile_size_in_scene;
+			const float tile_y = static_cast<float>(j / width) * tile_size_in_scene;
 
 			luabridge::LuaRef new_transform = new_tile->GetComponent("Transform");
 			new_transform["position"] = glm::vec2(tile_x, tile_y);

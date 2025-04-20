@@ -5,11 +5,15 @@
 
 class SceneDB
 {
+	
 public:
 
 	static inline bool first_scene = true;
 	static Scene current_scene;
 	static inline std::string scene_to_load;
+
+	static inline int tile_size;
+	static inline float tile_size_in_scene;
 	
 	static void LoadInitialScene();
 

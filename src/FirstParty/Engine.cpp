@@ -170,7 +170,8 @@ void Engine::DoInitialSetup()
 
 	std::string game_title = "";
 	EngineUtils::TryLoadString(game_config, "game_title", game_title);
-
+	EngineUtils::TryLoadInt(game_config, "tile_size", SceneDB::tile_size);
+	SceneDB::tile_size_in_scene = static_cast<float>(SceneDB::tile_size) / 100.0f;
 
 	renderer.CreateWindow(game_title.c_str(), cam_width, cam_height);
 	renderer.CreateRenderer(r, g, b);
